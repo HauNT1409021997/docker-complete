@@ -1,0 +1,37 @@
+FROM node 
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install 
+
+COPY . .
+
+EXPOSE 80
+
+#anonymous volume created on your hard drive will be lost if container is shudowned, 
+#whenever the container is created the anonymous volume is created again
+# VOLUME [ "/app/feedback" ]
+
+
+#docker command to run the container and create the volume
+#docker run -p 3000:80 -d -v feedback:app/feedback (volume_name/volume_workdir/path) --name container_name image_name:image_tage
+
+
+#remove anonymous volumes  docker cmd
+#docker volume prune or docker volume rm VOL_NAME
+
+# apply the absolute path to the bindmount
+#-v "%cd%":/app
+
+#in docker if there multiple workdir bind to the hard drive workdir then 
+#the longer more specific path will overite the smaller path 
+
+
+#docker cmd to apply file sharing between the docker workdir system and the current hard drive on the local 
+#docker run -p 3000:80 -d -v feedback:/app/feedback -v "D:\Learning\docker complete\data-volumes-01-starting-setup:/app" -v /app/node_modules --name feedbackappv1.1 dockerdatavolumes:v1.1
+#docker run -p local_port:docker_port -d (mode) -v volumne_name:workdir_path -v bindmount -v (anonymous) /app/node_modules 
+#--name container name image_name:image_tag  
+
+CMD ["npm", "start"]
