@@ -8,7 +8,9 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 80
+ENV PORT 80
+
+EXPOSE ${PORT}
 
 #anonymous volume created on your hard drive will be lost if container is shudowned, 
 #whenever the container is created the anonymous volume is created again
@@ -33,5 +35,7 @@ EXPOSE 80
 #docker run -p 3000:80 -d -v feedback:/app/feedback -v "D:\Learning\docker complete\data-volumes-01-starting-setup:/app" -v /app/node_modules --name feedbackappv1.1 dockerdatavolumes:v1.1
 #docker run -p local_port:docker_port -d (mode) -v volumne_name:workdir_path -v bindmount -v (anonymous) /app/node_modules 
 #--name container name image_name:image_tag  
+
+# VOLUME [ "/app/temp" ]
 
 CMD ["npm", "start"]
