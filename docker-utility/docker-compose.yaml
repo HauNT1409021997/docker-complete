@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  npm:
+    build: ./
+    stdin_open: true
+    tty: true
+    volumes:
+      #bind mounts
+      - ./:/app
+
+#use docker compose cmd to install package.json
+#docker run container_name init 
+
+#use docker exce to install dependencies without interupting the running container
+#docker exece container_name npm install
