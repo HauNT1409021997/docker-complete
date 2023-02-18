@@ -1,0 +1,69 @@
+version: '3.8'
+services:
+  #specify the containers
+  mongodb:
+    #specify the image to run the container
+    image: 'mongo'
+    #specify the volume
+    #setup custom name for the container 
+    # container_name: name
+    volumes:
+      #if you run volumes on :ro then you can only read but not be able to write to your server
+      - data:/data/db
+    # environment:
+    #   #there are two type syntax here
+    #   #MONGO_INITDB_ROOT_USERNAME:max
+    #   #MONGO_INITDB_ROOT_USERNAME=max
+    #   - MONGO_INITDB_ROOT_USERNAME=max
+    #   - MONGO_INITDB_ROOT_PASSWORD=secret
+    #another option to use env variable is
+    env_file:
+      #file path leads to env file 
+      - ./env/mongo.env
+    #specify the network to connect the Be to mongo server
+    #by default all containers in the same composed are configured to connect to the same network 
+    #can be omitted due to the default configuration of docker compose file
+    # networks:
+    #   - goals-net
+  backend:
+    # image: 'goals-node'
+    #build the container based on the dockerfile
+    #longer form to build
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      #can specify multiple ports
+    ports:
+      - '80:80'
+    volumes:
+      #named volume
+      - logs:/app/logs
+      #bind mount
+      - ./backend:/app
+      #anonymous volume
+      - /app/node_modules
+      # args:
+      #   - argument-name=1
+    env_file:
+      - ./env/backEnd.env
+    #only use on docker compose not on docker run 
+    #use to specify the dependencies between containers
+    depends_on:
+      - mongodb
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+#specify the named volume
+volumes:
+  data:
+  logs:
+
+#use cmd docker-compose up -d to run container detached mode
+#use cmd docker-compose down to remove all the container
