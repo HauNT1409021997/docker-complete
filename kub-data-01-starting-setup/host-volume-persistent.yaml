@@ -1,0 +1,14 @@
+apiVersions: v1
+kind: PersistenVolume
+metadata:
+  name: host-persistent-volume
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessMode:
+    - ReadWriteOnce
+  hostPath:
+    path: /data
+    type: DirectoryOrCreate

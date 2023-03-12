@@ -1,0 +1,11 @@
+apiVersions: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pv
+  accessMode:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,41 @@
+apiVersions: apps/v1
+kind: Deployment
+metadata:
+  name: story-volume-deployment
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+    - {key: app, operator: In, values:['story-app']}
+  template:
+    metadata:
+      label:
+        app: story-app
+    spec:
+      containers:
+        - name: story
+          image: docker-hub-name/image-name:latest
+          imagePullPolicy: Always
+          env:
+            - name: STORY_FOLDER
+              valueFrom:
+                configMapKeyRef:
+                  name: data-store-env
+                  key: folder
+          livenessProbe:
+            - httpGet:
+                path: /
+                port: 3000
+                periodSeconds: 10
+                initialDelaySeconds: 5
+          volumeMounts:
+            - name: story-volume
+              mountPath: /app/story (remote machine directory path)
+      volumes:
+        - name: story-volume
+          # emptyDir: {}
+          hostPath:
+            path: /data (read docs)
+            type: DirectoryOrCreate
+          persistentVolumeClaim:
+            claimName: host-pvc
