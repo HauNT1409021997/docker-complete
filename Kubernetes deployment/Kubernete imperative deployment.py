@@ -32,3 +32,16 @@
 
 #You can also merge all the yaml files into one file then separate all deployments with syntax "---".
 #Remember to put the the child deployment before the master deployment
+
+#Steps to create pod's volumes
+#pod's volumes will be lost if the pod is destroyed
+#1 create the deployment and the service 
+#2 in the deployment.yaml file add volume below the container 
+#3 specify the name, the volume type
+#4 specify mountPath in the container section
+
+
+#steps to create the persisten volume
+#persisten volumes will separated from the node in which the pod is currently running
+#1 create the deplyment and the service 
+#2 create new yaml file then specify the persistent volume like the the deployment
