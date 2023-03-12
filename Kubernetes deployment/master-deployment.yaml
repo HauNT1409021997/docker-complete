@@ -1,4 +1,17 @@
-apiVersion: apps/v1
+apiVersion: V1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    label: second-app
+  port:
+    - protocol: 'TCP'
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/1
 kind: Deployment
 metadata:
   name: deployment-name
@@ -8,8 +21,6 @@ spec:
     matchLabbel:
       app: second-app
       tier: backend
-    matchExpressions:
-      - {key: app, operator: In, value:['second-app']}
   template:
     metadata:
       label:
@@ -19,10 +30,4 @@ spec:
       container:
       - name: second-node
         image: docker-hub-name/deployment-image:v1
-        imagePullPolicy: Always
-        livenessProbe:
-        - httpGet:
-            path: /
-            port: 8080
-          periodSeconds: 10
-          initialDelaySeconds: 5
+
