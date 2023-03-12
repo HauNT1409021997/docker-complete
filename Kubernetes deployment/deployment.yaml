@@ -1,0 +1,21 @@
+apiVersion: apps/1
+kind: Deployment
+metadata:
+  name: deployment-name
+spec:
+  replicas: 1
+  selector:
+    matchLabbel:
+      app: second-app
+      tier: backend
+  template:
+    metadata:
+      label:
+        app: second-app
+        tier: backend
+    spec:
+      container:
+      - name: second-node
+        image: docker-hub-name/deployment-image:v1
+
+
